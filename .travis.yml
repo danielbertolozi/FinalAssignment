@@ -1,9 +1,18 @@
 language: csharp
 solution: FinalAssignment.sln
 dotnet: 1.0.1
+addons:
+ apt:
+  packages:
+  - cowsay
+branches:
+  only:
+  - master
 mono: none
 dist: trusty
-script:
+before_script:
  - dotnet restore
+script:
  - dotnet build
  - dotnet run --project FinalAssignment/FinalAssignment.csproj
+ - cowsay "finished"
