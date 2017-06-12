@@ -6,4 +6,4 @@ dist: trusty
 script:
  - dotnet restore
  - dotnet build
- - dotnet run
+ - dotnet run --project FinalAssignment/FinalAssignment.csproj
