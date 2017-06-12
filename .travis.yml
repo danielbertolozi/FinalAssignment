@@ -1,0 +1,7 @@
+language: csharp
+solution: FinalAssignment.sln
+dotnet: 1.0.1
+mono: none
+dist: trusty
+script:
+	dotnet restore
