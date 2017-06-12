@@ -1,9 +1,6 @@
 language: csharp
 solution: FinalAssignment.sln
 dotnet: 1.0.1
-branches:
-  only:
-  - master
 mono: none
 dist: trusty
 before_script:
