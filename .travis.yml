@@ -5,3 +5,5 @@ mono: none
 dist: trusty
 script:
  - dotnet restore
+ - dotnet build
+ - dotnet run
