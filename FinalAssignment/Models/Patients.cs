@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +11,8 @@ namespace FinalAssignment.Models
 		{
 			Consults = new List<Consults>();
 		}
+		[Required]
+		public int PatientKey { get; set; }
 		[Required]
 		[StringLength(64)]
 		public string Name { get; set; }

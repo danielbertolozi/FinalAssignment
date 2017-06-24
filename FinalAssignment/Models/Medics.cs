@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +12,8 @@ namespace FinalAssignment.Models
 			Availability = new List<Availability>();
 			Consults = new List<Consults>();
 		}
+		[Required]
+		public int MedicKey { get; set; }
 		[Required]
 		[StringLength(64)]
 		public string Name { get; set; }
@@ -38,7 +40,7 @@ namespace FinalAssignment.Models
 		[StringLength(32, MinimumLength = 8, ErrorMessage = "Please insert a password that is greater than 8 characters.")]
 		public string Password { get; set; }
 		[Required]
-		[Range(0,1)]
+		[Range(0, 1)]
 		public int Deleted { get; set; }
 		public ICollection<Availability> Availability { get; set; }
 		public ICollection<Consults> Consults { get; set; }

@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +9,8 @@ namespace FinalAssignment.Models
 		public Consults()
 		{
 		}
+		[Required]
+		public int ConsultKey { get; set; }
 		[Required]
 		[DataType(DataType.DateTime)]
 		public DateTime DateTime { get; set; }
