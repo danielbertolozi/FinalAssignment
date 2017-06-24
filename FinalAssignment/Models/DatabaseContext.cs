@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinalAssignment.Models
@@ -7,7 +7,7 @@ namespace FinalAssignment.Models
 	{
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			// TODO here goes all the PGSQL Stuff, will do it later
+			optionsBuilder.UseSqlite("Filename=Database.db");
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
