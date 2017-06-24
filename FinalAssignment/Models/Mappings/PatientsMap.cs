@@ -14,7 +14,6 @@ namespace FinalAssignment.Models.Mappings
 						 .ValueGeneratedOnAdd();
 
 			entityBuilder.Property(t => t.Address);
-			entityBuilder.Property(t => t.Consults);
 			entityBuilder.Property(t => t.BirthDate);
 			entityBuilder.Property(t => t.Deleted);
 			entityBuilder.Property(t => t.Email);
