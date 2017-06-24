@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;\
+using FinalAssignment.Models;
 
 namespace FinalAssignment
 {
@@ -14,6 +15,10 @@ namespace FinalAssignment
 	{
 		public Startup(IHostingEnvironment env)
 		{
+			using (var Database = new DatabaseContext())
+			{
+				Database.Database.EnsureCreatedAsync();
+			}
 			var builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
 				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -29,6 +34,7 @@ namespace FinalAssignment
 		{
 			// Add framework services.
 			services.AddMvc();
+			services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
