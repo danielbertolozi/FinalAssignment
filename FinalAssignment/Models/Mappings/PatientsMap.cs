@@ -22,7 +22,7 @@ namespace FinalAssignment.Models.Mappings
 			entityBuilder.Property(t => t.Password);
 			entityBuilder.Property(t => t.Phone);
 
-			entityBuilder.ToTable("Medics");
+			entityBuilder.ToTable("Patients");
 			entityBuilder.Property(t => t.Address).HasColumnName("Address");
 			entityBuilder.Property(t => t.BirthDate).HasColumnName("BirthDate");
 			entityBuilder.Property(t => t.Deleted).HasColumnName("Deleted");
