@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -15,7 +15,7 @@ namespace FinalAssignment.Models
 		[Required]
 		[Range(1,3)]
 		public int Classification { get; set; }
-		public ICollection<Medics> Medics { get; set; }
-		public ICollection<Patients> Patients { get; set; }
+		public virtual Medics Medics { get; set; }
+		public virtual Patients Patients { get; set; }
 	}
 }

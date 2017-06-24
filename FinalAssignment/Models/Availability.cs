@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,8 +8,9 @@ namespace FinalAssignment.Models
 	{
 		public Availability()
 		{
-			this.Medics = new List<Medics>();
 		}
+		[Required]
+		public int AvailabilityKey { get; set; }
 		[Required]
 		[Range(1,7)]
 		public int DayOfWeek { get; set; }
@@ -22,6 +23,6 @@ namespace FinalAssignment.Models
 		[Required]
 		[Range(0,1)]
 		public int IsAllDay { get; set; }
-		public ICollection<Medics> Medics { get; set; }
+		public virtual Medics Medics { get; set; }
 	}
 }

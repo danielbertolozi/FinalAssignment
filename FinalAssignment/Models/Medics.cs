@@ -1,4 +1,5 @@
-﻿using System;
+﻿﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,6 +9,8 @@ namespace FinalAssignment.Models
 	{
 		public Medics()
 		{
+			Availability = new List<Availability>();
+			Consults = new List<Consults>();
 		}
 		[Required]
 		[StringLength(64)]
@@ -37,5 +40,7 @@ namespace FinalAssignment.Models
 		[Required]
 		[Range(0,1)]
 		public int Deleted { get; set; }
+		public ICollection<Availability> Availability { get; set; }
+		public ICollection<Consults> Consults { get; set; }
 	}
 }
