@@ -10,12 +10,14 @@ namespace FinalAssignment.Models
 		{
 		}
 		[Required]
+		public int ConsultKey { get; set; }
+		[Required]
 		[DataType(DataType.DateTime)]
 		public DateTime DateTime { get; set; }
 		[Required]
 		[Range(1,3)]
 		public int Classification { get; set; }
-		public ICollection<Medics> Medics { get; set; }
-		public ICollection<Patients> Patients { get; set; }
+		public virtual Medics Medics { get; set; }
+		public virtual Patients Patients { get; set; }
 	}
 }
