@@ -1,13 +1,16 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using FinalAssignment.Models;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace FinalAssignment
 {
@@ -35,6 +38,9 @@ namespace FinalAssignment
 			// Add framework services.
 			services.AddMvc();
 			services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
+			services.AddAuthorization(options =>
+			                          options.AddPolicy("Medic", policy => policy.RequireClaim("Role", "Medic"))                         
+         	);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +60,23 @@ namespace FinalAssignment
 			}
 
 			app.UseStaticFiles();
+
+			app.UseCookieAuthentication(new CookieAuthenticationOptions() {
+				AuthenticationScheme = "CookieMiddleware",
+				LoginPath = new PathString("/Account/Login"),
+				AccessDeniedPath = new PathString("/Account/Forbidden/"),
+				AutomaticAuthenticate = true,
+				AutomaticChallenge = true
+			});
+
+			app.UseClaimsTransformation(context =>
+			{
+				if (context.Principal.Identity.IsAuthenticated)
+				{
+					context.Principal.Identities.First().AddClaim(new Claim("IsAuthenticated", DateTime.Now.ToString()));
+				}
+				return Task.FromResult(context.Principal);
+			});
 
 			app.UseMvc(routes =>
 			{
