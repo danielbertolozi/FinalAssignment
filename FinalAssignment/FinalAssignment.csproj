@@ -27,5 +27,6 @@
     <Folder Include="Models\Mappings\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Agenda\" />
+    <Folder Include="Data\" />
   </ItemGroup>
 </Project>
