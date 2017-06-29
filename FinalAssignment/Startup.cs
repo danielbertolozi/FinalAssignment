@@ -1,4 +1,4 @@
-﻿﻿﻿using System;
+﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using FinalAssignment.Models;
+using FinalAssignment.Data;
 using AutoMapper;
 using FinalAssignment.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -96,6 +97,8 @@ namespace FinalAssignment
 					name: "default",
 					template: "{controller=Home}/{action=Index}/{id?}");
 			});
+
+			DbInitializer.Initialize(new DatabaseContext());
 		}
 	}
 }
