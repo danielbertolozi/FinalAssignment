@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,6 +64,8 @@ namespace FinalAssignment
 			Mapper.Initialize(Mapper => {
 				Mapper.CreateMap<CreateViewModel, Patients>();
 				Mapper.CreateMap<CreateViewModel, Medics>();
+				Mapper.CreateMap<LoginViewModel, Patients>();
+				Mapper.CreateMap<LoginViewModel, Medics>();
 			});
 
 			app.UseStaticFiles();

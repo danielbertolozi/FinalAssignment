@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using FinalAssignment.ViewModels;
@@ -12,7 +12,13 @@ namespace FinalAssignment.Controllers
 	public class AccountController : Controller
 	{
 		[HttpGet]
-		public IActionResult Login()
+		public IActionResult LoginPatient()
+		{
+			return View();
+		}
+
+		[HttpGet]
+		public IActionResult LoginMedic()
 		{
 			return View();
 		}
@@ -32,9 +38,21 @@ namespace FinalAssignment.Controllers
 		}
 
 		[HttpPost]
+		public Task<IActionResult> LoginPatient(LoginViewModel Model)
+		{
+			var ConvertedModel = this._MapPatientLoginViewModel(Model);
+		}
+
+		[HttpPost]
+		public Task<IActionResult> LoginMedic(LoginViewModel Model)
+		{
+			var ConvertedModel = this._MapMedicLoginViewModel(Model);
+		}
+
+		[HttpPost]
 		public async Task<IActionResult> Create(CreateViewModel Model)
 		{
-			var ConvertedModel = this._MapViewModelToModel(Model);
+			var ConvertedModel = this._MapCreateViewModel(Model);
 			try {
 				if (ModelState.IsValid)
 				{
@@ -53,7 +71,17 @@ namespace FinalAssignment.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-		private Object _MapViewModelToModel(CreateViewModel Model)
+		private Object _MapPatientLoginViewModel(LoginViewModel Model)
+		{
+			return Mapper.Map<Patients>(Model);
+		}
+
+		private Object _MapMedicLoginViewModel(LoginViewModel Model)
+		{
+			return Mapper.Map<Medics>(Model);
+		}
+
+		private Object _MapCreateViewModel(CreateViewModel Model)
 		{
 			
 			if (Model.AccountType == 'M')
