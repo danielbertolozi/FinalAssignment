@@ -10,9 +10,9 @@ namespace FinalAssignment.ViewModels
 		public string Name { get; set; }
 		[Required]
 		[RegularExpression("[mfMF]", ErrorMessage = "Please insert a valid genre value (M-F).")]
-		public string Genre { get; set; }
+		public char Genre { get; set; }
 		[Required]
-		[Timestamp]
+		[DataType(DataType.Date)]
 		[DisplayName("Date of Birth")]
 		public DateTime BirthDate { get; set; }
 		[Required]
@@ -30,5 +30,9 @@ namespace FinalAssignment.ViewModels
 		[DataType(DataType.Password)]
 		[StringLength(32, MinimumLength = 8, ErrorMessage = "Please insert a password that is greater than 8 characters.")]
 		public string Password { get; set; }
+		[Required]
+		[RegularExpression("[mpMP]")]
+		[DisplayName("Account Type")]
+		public char AccountType { get; set; }
 	}
 }
