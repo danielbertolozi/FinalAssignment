@@ -39,7 +39,7 @@ namespace FinalAssignment.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> LoginAsync(LoginViewModel Model)
+		public async Task<IActionResult> Login(LoginViewModel Model)
 		{
 			try
 			{
