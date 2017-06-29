@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace FinalAssignment.Models
+namespace FinalAssignment.ViewModels
 {
-	public class Patients
+	public class CreateViewModel
 	{
-		public Patients()
-		{
-			Consults = new List<Consults>();
-		}
 		[Required]
-		public int PatientKey { get; set; }
-		[Required]
-		[StringLength(64)]
 		public string Name { get; set; }
+		[Required]
+		[RegularExpression("[mfMF]", ErrorMessage = "Please insert a valid genre value (M-F).")]
+		public char Genre { get; set; }
 		[Required]
 		[DataType(DataType.Date)]
 		[DisplayName("Date of Birth")]
@@ -32,15 +27,12 @@ namespace FinalAssignment.Models
 		[StringLength(32)]
 		public string Address { get; set; }
 		[Required]
-		[RegularExpression("[mfMF]", ErrorMessage = "Please insert a valid genre value (M-F).")]
-		public char Genre { get; set; }
-		[Required]
 		[DataType(DataType.Password)]
 		[StringLength(32, MinimumLength = 8, ErrorMessage = "Please insert a password that is greater than 8 characters.")]
 		public string Password { get; set; }
 		[Required]
-		[Range(0, 1)]
-		public int Deleted { get; set; }
-		public ICollection<Consults> Consults { get; set; }
+		[RegularExpression("[mpMP]")]
+		[DisplayName("Account Type")]
+		public char AccountType { get; set; }
 	}
 }
