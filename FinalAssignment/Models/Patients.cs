@@ -17,7 +17,7 @@ namespace FinalAssignment.Models
 		[StringLength(64)]
 		public string Name { get; set; }
 		[Required]
-		[Timestamp]
+		[DataType(DataType.Date)]
 		[DisplayName("Date of Birth")]
 		public DateTime BirthDate { get; set; }
 		[Required]
