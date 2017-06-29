@@ -14,6 +14,13 @@ namespace FinalAssignment.Controllers
 {
 	public class AccountController : Controller
 	{
+		private DatabaseContext _Context;
+
+		public AccountController (DatabaseContext Context)
+		{
+			this._Context = Context;
+		}
+
 		[HttpGet]
 		public IActionResult Login()
 		{
@@ -62,7 +69,7 @@ namespace FinalAssignment.Controllers
 							var Claims = new List<Claim> { new Claim("Role", "Medic") };
 							var ClaimsIdentity = new ClaimsIdentity(Claims);
 							var ClaimsPrincipal = new ClaimsPrincipal(ClaimsIdentity);
-							await HttpContext.Authentication.SignInAsync("cookieMiddleware", ClaimsPrincipal);
+							await HttpContext.Authentication.SignInAsync("CookieMiddleware", ClaimsPrincipal);
 							return RedirectToAction("Index", "Home");
 						}
 					}
