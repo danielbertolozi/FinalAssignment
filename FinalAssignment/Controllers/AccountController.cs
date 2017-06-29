@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using FinalAssignment.ViewModels;
@@ -69,6 +69,7 @@ namespace FinalAssignment.Controllers
 							var Claims = new List<Claim> { new Claim("Role", "Medic") };
 							var ClaimsIdentity = new ClaimsIdentity(Claims);
 							var ClaimsPrincipal = new ClaimsPrincipal(ClaimsIdentity);
+							User.AddIdentity(ClaimsIdentity);
 							await HttpContext.Authentication.SignInAsync("CookieMiddleware", ClaimsPrincipal);
 							return RedirectToAction("Index", "Home");
 						}
