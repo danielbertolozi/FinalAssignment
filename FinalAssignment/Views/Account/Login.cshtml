@@ -6,7 +6,7 @@
     class="text-danger"></span>
 <form
 	asp-controller="Account"
-	asp-action="LoginPatient"
+	asp-action="Login"
 	method="post">
     <div
 	    class="form-group">
@@ -33,10 +33,21 @@
             class="text-danger"></span>
     </div>
 	<div
+        class="form-group">
+        <label
+            asp-for="AccountType"
+            class="control-label">
+        </label>
+        <div
+            class="dropdown">
+        @Html.DropDownListFor(model => model.AccountType, ViewBag.AccountTypes as List<SelectListItem>, new { @class = "dropdown" })
+        </div>
+        <span 
+            asp-validation-for="AccountType"
+            class="text-danger"></span>
+    </div>
+	<div
 		class="form-group">
-	    <input type="submit" class="btn btn-primary" value="LoginPatient" />
+	    <input type="submit" class="btn btn-primary" value="Login" />
 	</div>
 </form>
-
-<h4>Login as a Medic</h4>
-<!-- TODO Add link to the LoginMedic View -->

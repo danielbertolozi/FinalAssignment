@@ -43,6 +43,9 @@ namespace FinalAssignment
 			services.AddAuthorization(options =>
 			                          options.AddPolicy("Medic", policy => policy.RequireClaim("Role", "Medic"))                         
          	);
+			services.AddAuthorization(options =>
+									  options.AddPolicy("Patient", policy => policy.RequireClaim("Role", "Patient"))
+			 );
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
