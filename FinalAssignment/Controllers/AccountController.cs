@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using FinalAssignment.ViewModels;
@@ -11,6 +11,11 @@ namespace FinalAssignment.Controllers
 {
 	public class AccountController : Controller
 	{
+		[HttpGet]
+		public IActionResult Login()
+		{
+			return View();
+		}
 		
 		[HttpGet]
 		public IActionResult Create()
