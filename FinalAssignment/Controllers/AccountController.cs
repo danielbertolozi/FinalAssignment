@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using FinalAssignment.ViewModels;
@@ -54,24 +54,14 @@ namespace FinalAssignment.Controllers
 				{
 					using (var Database = new DatabaseContext())
 					{
-						if (Model.AccountType == 'M')
+						var Result = this._VerifyLogon(Database, Model);
+						if (Result == null)
 						{
-							Medics Result = Database
-								.Medics
-								.Where(p => p.Email == Model.Email &&
-									   p.Password == Model.Password)
-								.FirstOrDefault();
-
-							if (Result == null)
-							{
-								throw new Exception("User not found");
-							}
-							var Claims = new List<Claim> { new Claim("Role", "Medic") };
-							var ClaimsIdentity = new ClaimsIdentity(Claims);
-							var ClaimsPrincipal = new ClaimsPrincipal(ClaimsIdentity);
-							await HttpContext.Authentication.SignInAsync("CookieMiddleware", ClaimsPrincipal);
-							return RedirectToAction("Index", "Home");
+							throw new Exception("User not found");
 						}
+						ClaimsPrincipal ClaimsPrincipal = this._GetClaims(Model.AccountType);
+						await HttpContext.Authentication.SignInAsync("CookieMiddleware", ClaimsPrincipal);
+						return RedirectToAction("Index", "Home");
 					}
 				}
 			}
@@ -130,6 +120,48 @@ namespace FinalAssignment.Controllers
 			{
 				return Mapper.Map<Patients>(Model);
 			}
+		}
+
+		private Object _VerifyLogon(DatabaseContext Database, LoginViewModel Model)
+		{
+			if (Model.AccountType == 'M')
+			{
+				return this._VerifyMedicLogon(Database, Model);
+			}
+			else if (Model.AccountType == 'P')
+			{
+				return this._VerifyPatientLogon(Database, Model);
+			}
+			return null;
+		}
+
+		private Medics _VerifyMedicLogon(DatabaseContext Database, LoginViewModel Model)
+		{
+			Medics Result = Database
+								.Medics
+								.Where(p => p.Email == Model.Email &&
+									   p.Password == Model.Password)
+								.FirstOrDefault();
+			return Result;
+		}
+
+		private Patients _VerifyPatientLogon(DatabaseContext Database, LoginViewModel Model)
+		{
+			Patients Result = Database
+								.Patients
+								.Where(p => p.Email == Model.Email &&
+									   p.Password == Model.Password)
+								.FirstOrDefault();
+			return Result;
+		}
+
+		private ClaimsPrincipal _GetClaims(char AccountType)
+		{
+			string Role = AccountType == 'M' ? "Medic" : "Patient";
+			var Claims = new List<Claim> { new Claim("Role", Role) };
+			var ClaimsIdentity = new ClaimsIdentity(Claims);
+			var ClaimsPrincipal = new ClaimsPrincipal(ClaimsIdentity);
+			return ClaimsPrincipal;
 		}
 	}
 }
