@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using FinalAssignment.Models;
+using AutoMapper;
+using FinalAssignment.ViewModels;
 
 namespace FinalAssignment
 {
@@ -52,6 +54,11 @@ namespace FinalAssignment
 			{
 				app.UseExceptionHandler("/Home/Error");
 			}
+
+			Mapper.Initialize(Mapper => {
+				Mapper.CreateMap<CreateViewModel, Patients>();
+				Mapper.CreateMap<CreateViewModel, Medics>();
+			});
 
 			app.UseStaticFiles();
 
