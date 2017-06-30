@@ -71,6 +71,7 @@ namespace FinalAssignment
 				Mapper.CreateMap<CreateViewModel, Medics>();
 				Mapper.CreateMap<LoginViewModel, Patients>();
 				Mapper.CreateMap<LoginViewModel, Medics>();
+				Mapper.CreateMap<Consults, CalendarEvent>();
 			});
 
 			app.UseStaticFiles();

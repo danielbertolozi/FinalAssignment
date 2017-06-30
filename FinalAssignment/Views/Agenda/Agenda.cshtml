@@ -1,33 +1,4 @@
-﻿@Model FinalAssignment.ViewModels.AgendaViewModel
-
-<div 
-	class="calendar"
-	style="margin-top: 3%">
-	<table 
-		class="table table-striped table-bordered">
-		<thead>
-            <tr>
-			    <th>Sun</th>
-				<th>Mon</th>
-				<th>Tue</th>
-				<th>Wed</th>
-				<th>Thu</th>
-				<th>Fri</th>
-				<th>Sat</th>
-			</tr>
-		</thead>
-		<tbody>
-        @{for (int i = 0; i <= 7; i++) {
-            <tr>
-            @for (int j = 0; j <= 6; j++) {
-                <td></td>
-			}
-            </tr>
-		}}
-		</tbody>
-	</table>
-</div>
-
+﻿@model FinalAssignment.ViewModels.AgendaViewModel
 <div
     id="calendarList">
 	<table
