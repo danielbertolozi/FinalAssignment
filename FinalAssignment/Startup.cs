@@ -65,7 +65,8 @@ namespace FinalAssignment
 				app.UseExceptionHandler("/Home/Error");
 			}
 
-			Mapper.Initialize(Mapper => {
+			Mapper.Initialize(Mapper =>
+			{
 				Mapper.CreateMap<CreateViewModel, Patients>();
 				Mapper.CreateMap<CreateViewModel, Medics>();
 				Mapper.CreateMap<LoginViewModel, Patients>();
@@ -74,7 +75,8 @@ namespace FinalAssignment
 
 			app.UseStaticFiles();
 
-			app.UseCookieAuthentication(new CookieAuthenticationOptions() {
+			app.UseCookieAuthentication(new CookieAuthenticationOptions()
+			{
 				AuthenticationScheme = "CookieMiddleware",
 				LoginPath = new PathString("/Account/Login"),
 				AccessDeniedPath = new PathString("/Account/Forbidden/"),

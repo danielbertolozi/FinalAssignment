@@ -59,7 +59,7 @@ namespace FinalAssignment.Controllers
 						{
 							throw new Exception("User not found");
 						}
-						ClaimsPrincipal ClaimsPrincipal = this._GetClaims(Model.AccountType);
+						ClaimsPrincipal ClaimsPrincipal = this._GetClaimsPrincipal(Model.AccountType);
 						await HttpContext.Authentication.SignInAsync("CookieMiddleware", ClaimsPrincipal);
 						return RedirectToAction("Index", "Home");
 					}
@@ -155,12 +155,12 @@ namespace FinalAssignment.Controllers
 			return Result;
 		}
 
-		private ClaimsPrincipal _GetClaims(char AccountType)
+		private ClaimsPrincipal _GetClaimsPrincipal(char AccountType)
 		{
 			string Role = AccountType == 'M' ? "Medic" : "Patient";
 			var Claims = new List<Claim> { new Claim("Role", Role) };
-			var ClaimsIdentity = new ClaimsIdentity(Claims);
-			var ClaimsPrincipal = new ClaimsPrincipal(ClaimsIdentity);
+			ClaimsIdentity ClaimsIdentity = new ClaimsIdentity(Claims, "CustomAuthenticationType"); /* A change in .Net 4.5 requires the string to be passed, https://leastprivilege.com/2012/09/24/claimsidentity-isauthenticated-and-authenticationtype-in-net-4-5/*/
+			ClaimsPrincipal ClaimsPrincipal = new ClaimsPrincipal(ClaimsIdentity);
 			return ClaimsPrincipal;
 		}
 	}
