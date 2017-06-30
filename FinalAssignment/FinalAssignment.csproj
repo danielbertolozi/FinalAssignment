@@ -18,6 +18,7 @@
     <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="Bootstrap.v3.Datetimepicker" Version="4.17.45" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
+    <PackageReference Include="FluentValidation" Version="7.1.0" />
   </ItemGroup>
 
 
@@ -28,5 +29,6 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Agenda\" />
     <Folder Include="Data\" />
+    <Folder Include="Util\" />
   </ItemGroup>
 </Project>
