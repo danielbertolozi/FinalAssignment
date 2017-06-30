@@ -47,7 +47,7 @@
 	        </label>
 	        <div
 	            class="dropdown">
-	        @Html.DropDownListFor(model => model.Medic, ViewBag.MedicsList as List<SelectListItem>, new { @class = "dropdown" })
+	        @Html.DropDownListFor(model => model.Medic, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
 	        </div>
 	    </div>
 	}
@@ -60,7 +60,7 @@
 	        </label>
 	        <div
 	            class="dropdown">
-	        @Html.DropDownListFor(model => model.Patient, ViewBag.PatientsList as List<SelectListItem>, new { @class = "dropdown" })
+	        @Html.DropDownListFor(model => model.Patient, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
 	        </div>
 	    </div>
 	}}

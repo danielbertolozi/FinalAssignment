@@ -34,6 +34,7 @@ namespace FinalAssignment.Controllers
 			string UserRole = User.Claims.Where(c => c.Type == "Role").FirstOrDefault().Value;
 			@ViewBag.AtendeesList = UserRole == "Patient" ? _GetMedicsList() : _GetPatientsList();
 			@ViewBag.ClassificationList = _GetClassifications();
+			@ViewBag.UserRole = UserRole;
 			return View();
 		}
 

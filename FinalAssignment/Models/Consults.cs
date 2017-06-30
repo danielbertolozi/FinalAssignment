@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace FinalAssignment.Models
@@ -14,7 +15,8 @@ namespace FinalAssignment.Models
 		[MaxLength(128)]
 		public string Description { get; set; }
 		[Required]
-		[DataType(DataType.DateTime)]
+		[DataType(DataType.Date)]
+		[DisplayName("Date")]
 		public DateTime Date { get; set; }
 		[Required]
 		public TimeSpan Duration { get; set; }
