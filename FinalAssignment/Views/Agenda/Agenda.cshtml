@@ -1,4 +1,4 @@
-﻿@model FinalAssignment.ViewModels.AgendaViewModel
+﻿﻿@model FinalAssignment.ViewModels.AgendaViewModel
 <div
     id="calendarList">
 	<table
@@ -39,4 +39,11 @@
 		}}
 	    </tbody>
 	</table>
+</div>
+<div>
+    <a asp-area="" asp-controller="Agenda" asp-action="Create">
+	    <button
+            class="btn btn-default">New
+		</button>
+	</a>
 </div>

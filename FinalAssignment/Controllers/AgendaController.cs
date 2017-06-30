@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using FinalAssignment.Data;
@@ -25,6 +25,13 @@ namespace FinalAssignment.Controllers
 			List<CalendarEvent> CalendarEventList = this._FetchEventsFromUser();
 			Model.CalendarEventList = CalendarEventList;
 			return View(Model);
+		}
+
+		[HttpGet]
+		public IActionResult Create()
+		{
+			return View();
+			/* TODO methods to fetch dropdown infos */
 		}
 
 		private List<CalendarEvent> _FetchEventsFromUser()
