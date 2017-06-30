@@ -43,26 +43,26 @@
             </tr>
         </thead>
 		<tbody>
-		@{for (var Event in Model.CalendarEventList) 
+		@{foreach (var Event in Model.CalendarEventList) 
 		{
 			<tr>
                 <td>
-					<p>Event.Title</p>
+					<p>@Event.Title</p>
 				</td>
 				<td>
-                    <p>Event.Description</p>
+                    <p>@Event.Description</p>
 				</td>
 				<td>
-                    <p>Event.Date</p>
+                    <p>@Event.Date</p>
                 </td>
 				<td>
-                    <p>Event.Duration</p>
+                    <p>@Event.Duration</p>
                 </td>
 				<td>
-                    <p>Event.Medic.Name</p>
+                    <p>@Event.Medic.Name</p>
                 </td>
 				<td>
-                    <p>Event.Patient.Name</p>
+                    <p>@Event.Patient.Name</p>
                 </td>
 		    </tr>
 		}}
