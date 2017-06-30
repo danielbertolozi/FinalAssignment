@@ -13,19 +13,25 @@ namespace FinalAssignment.Models.Mappings
 			entityBuilder.Property(t => t.ConsultKey)
 			             .ValueGeneratedOnAdd();
 
+			entityBuilder.Property(t => t.Title);
+			entityBuilder.Property(t => t.Description);
+			entityBuilder.Property(t => t.Duration);
+			entityBuilder.Property(t => t.Date);
 			entityBuilder.Property(t => t.Classification);
-			entityBuilder.Property(t => t.DateTime);
 
 			entityBuilder.ToTable("Consults");
 			entityBuilder.Property(t => t.ConsultKey).HasColumnName("ConsultKey");
+			entityBuilder.Property(t => t.Title).HasColumnName("Title");
+			entityBuilder.Property(t => t.Description).HasColumnName("Description");
+			entityBuilder.Property(t => t.Duration).HasColumnName("Duration");
+			entityBuilder.Property(t => t.Date).HasColumnName("Date");
 			entityBuilder.Property(t => t.Classification).HasColumnName("Classification");
-			entityBuilder.Property(t => t.DateTime).HasColumnName("DateTime");
 
-			entityBuilder.HasOne(t => t.Medics)
+			entityBuilder.HasOne(t => t.Medic)
 			             .WithMany(t => t.Consults)
 			             .HasForeignKey(t => t.ConsultKey);
 
-			entityBuilder.HasOne(t => t.Patients)
+			entityBuilder.HasOne(t => t.Patient)
 			             .WithMany(t => t.Consults)
 			             .HasForeignKey(t => t.ConsultKey);
 		}

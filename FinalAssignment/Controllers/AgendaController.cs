@@ -22,8 +22,8 @@ namespace FinalAssignment.Controllers
 		public IActionResult Agenda()
 		{
 			AgendaViewModel Model = new AgendaViewModel();
-			List<CalendarEvent> CalendarEventList = this._FetchEventsFromUser();
-			Model.CalendarEventList = CalendarEventList;
+			List<Consults> ConsultsList = this._FetchEventsFromUser();
+			Model.ConsultsList = ConsultsList;
 			return View(Model);
 		}
 
@@ -34,39 +34,29 @@ namespace FinalAssignment.Controllers
 			/* TODO methods to fetch dropdown infos */
 		}
 
-		private List<CalendarEvent> _FetchEventsFromUser()
+		private List<Consults> _FetchEventsFromUser()
 		{
 			String UserName = User.Identity.Name;
 			Claim Role = User.Claims.FirstOrDefault(t => t.Type == "Role");
 			String RoleType = Role.Value;
 			List<Consults> ConsultsList = new List<Consults>();
-			using (var Database = _Context)
+			using (var Database = new DatabaseContext())
 			{
 				if (RoleType == "Medic")
 				{
-					ConsultsList = Database.Consults.Where(t => t.Medics.Name == UserName).ToList();
+					ConsultsList = Database.Consults.Where(t => t.Medic.Name == UserName).ToList();
 				}
 				else if  (RoleType == "Patient")
 				{
-					ConsultsList = Database.Consults.Where(t => t.Patients.Name == UserName).ToList();
+					ConsultsList = Database.Consults.Where(t => t.Patient.Name == UserName).ToList();
 				}
 				else
 				{
 					throw new Exception("Could not retrieve User Role");
 				}
 			}
-			return _ConvertConsultToCalendarEvent(ConsultsList);
+			return ConsultsList;
 
-		}
-
-		private List<CalendarEvent> _ConvertConsultToCalendarEvent(List<Consults> ConsultsList)
-		{
-			List<CalendarEvent> EventsList = new List<CalendarEvent>();
-			foreach (Consults Consult in ConsultsList)
-			{
-				EventsList.Add(Mapper.Map<CalendarEvent>(Consult));
-			}
-			return EventsList;
 		}
 	}
 }
