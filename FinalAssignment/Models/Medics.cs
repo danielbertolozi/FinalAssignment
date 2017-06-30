@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using FluentValidation.Attributes;
+using FinalAssignment.Util;
 
 namespace FinalAssignment.Models
 {
+	[Validator(typeof(MedicsUniqueValidator))]
 	public class Medics
 	{
 		public Medics()
