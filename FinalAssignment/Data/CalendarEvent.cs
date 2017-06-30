@@ -4,12 +4,12 @@ namespace FinalAssignment.Data
 {
 	public class CalendarEvent
 	{
-		public CalendarEvent(string title, string description, DateTime startTime, DateTime endTime, Medics medic, Patients patient)
+		public CalendarEvent(string title, string description, DateTime StartTime, DateTime EndTime, Medics medic, Patients patient)
 		{
 			this.Title = title;
 			this.Description = description;
-			this.StartTime = startTime;
-			this.EndTime = endTime;
+			this.Date = StartTime;
+			this.Duration = EndTime.Subtract(StartTime);
 			this.Medic = medic;
 			this.Patient = patient;
 		}
@@ -17,9 +17,7 @@ namespace FinalAssignment.Data
 		public string Description { get; set; }
 		public Medics Medic { get; set; }
 		public Patients Patient { get; set; }
-		public DateTime StartTime { get; set; }
-		public DateTime EndTime { get; set; }
-
-		/* TODO maybe change StartTime and EndTime for Date and Duration */
+		public DateTime Date { get; set; }
+		public TimeSpan Duration { get; set; }
 	}
 }
