@@ -45,7 +45,26 @@
 		<tbody>
 		@{for (var Event in Model.CalendarEventList) 
 		{
-	      <tr>PUT INFO HERE</tr>  
+			<tr>
+                <td>
+					<p>Event.Title</p>
+				</td>
+				<td>
+                    <p>Event.Description</p>
+				</td>
+				<td>
+                    <p>Event.Date</p>
+                </td>
+				<td>
+                    <p>Event.Duration</p>
+                </td>
+				<td>
+                    <p>Event.Medic.Name</p>
+                </td>
+				<td>
+                    <p>Event.Patient.Name</p>
+                </td>
+		    </tr>
 		}}
 	    </tbody>
 	</table>
