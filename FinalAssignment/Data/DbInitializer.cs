@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FinalAssignment.Models;
 
@@ -14,6 +15,10 @@ namespace FinalAssignment.Data
 		public static void Initialize(DatabaseContext Context)
 		{
 			Context.Database.EnsureCreated();
+			if (_VerifyExistingData(Context))
+			{
+				return;
+			}
 			List<Medics> MedicsList = _GenerateMedicsList();
 			List<Patients> PatientsList = _GeneratePatientsList();
 			foreach (var Medic in MedicsList)
@@ -87,6 +92,11 @@ namespace FinalAssignment.Data
 				Phone = "(51) 12931293",
 			});
 			return PatientsList;
+		}
+
+		private static Boolean _VerifyExistingData (DatabaseContext Context)
+		{
+			return Context.Patients.FirstOrDefault() != null;
 		}
 	}
 }
