@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FinalAssignment.Models;
 
 namespace FinalAssignment.Data
@@ -10,7 +11,7 @@ namespace FinalAssignment.Data
 		{
 			Medic, Patient
 		}
-		public async static void Initialize (DatabaseContext Context)
+		public async static Task Initialize(DatabaseContext Context)
 		{
 			await Context.Database.EnsureCreatedAsync();
 			List<Medics> MedicsList = _GenerateMedicsList();
@@ -60,7 +61,7 @@ namespace FinalAssignment.Data
 
 		private static List<Patients> _GeneratePatientsList ()
 		{
-			List<Patients> PatientsList = new List<Patients>;
+			List<Patients> PatientsList = new List<Patients>();
 			PatientsList.Add(new Patients
 			{
 				Address = "Address 01",
