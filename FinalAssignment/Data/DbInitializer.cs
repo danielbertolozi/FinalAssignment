@@ -11,9 +11,9 @@ namespace FinalAssignment.Data
 		{
 			Medic, Patient
 		}
-		public async static Task Initialize(DatabaseContext Context)
+		public static void Initialize(DatabaseContext Context)
 		{
-			await Context.Database.EnsureCreatedAsync();
+			Context.Database.EnsureCreated();
 			List<Medics> MedicsList = _GenerateMedicsList();
 			List<Patients> PatientsList = _GeneratePatientsList();
 			foreach (var Medic in MedicsList)
@@ -24,7 +24,7 @@ namespace FinalAssignment.Data
 			{
 				Context.Add(Patient);
 			}
-			await Context.SaveChangesAsync();
+			Context.SaveChanges();
 		}
 
 		private static List<Medics> _GenerateMedicsList ()
