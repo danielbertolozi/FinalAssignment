@@ -11,7 +11,6 @@ namespace FinalAssignment.Controllers
 		[HttpGet]
 		public IActionResult Agenda()
 		{
-			Console.WriteLine(User.Claims);
 			return View();
 		}
 	}
