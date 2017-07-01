@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using FinalAssignment.Data;
@@ -9,14 +9,13 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinalAssignment.Controllers
 {
 	public class AgendaController : Controller
 	{
 		private DatabaseContext _Context;
-		private List<Medics> _Medics;
-		private List<Patients> _Patients;
 
 		public AgendaController(DatabaseContext Context)
 		{
@@ -43,19 +42,20 @@ namespace FinalAssignment.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(Consults Consult)
+		public IActionResult Create(CreateAssignmentViewModel Model)
 		{
 			/* TODO Handle exception for Consult Type as soon as DB have the trigger ready */
-			/* Validate if date isn't previous than today */
+			/* TODO Validate if date isn't previous than today */
+			/* TODO Verify meeting time as it isn't working */
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					using (var Database = new DatabaseContext())
-					{
-						Database.Add(Consult);
-						await Database.SaveChangesAsync();
-					}
+					Model.MedicKey = this._AttachMedicKey(_Context, Model);
+					Model.PatientKey = this._AttachPatientKey(_Context, Model);
+					Consults Consult = Mapper.Map<Consults>(Model);
+					_Context.Add(Consult);
+					_Context.SaveChanges();
 					@ViewBag.Success = "The Assignment has been created successfully!";
 					return RedirectToAction("Agenda", "Agenda");
 				}
@@ -71,19 +71,19 @@ namespace FinalAssignment.Controllers
 
 		private List<Consults> _FetchEventsFromUser()
 		{
-			String UserName = User.Identity.Name;
+			String UserMail = _GetUserEmail();
 			Claim Role = User.Claims.FirstOrDefault(t => t.Type == "Role");
 			String RoleType = Role.Value;
 			List<Consults> ConsultsList = new List<Consults>();
-			using (var Database = new DatabaseContext())
+			using (var Database = _Context)
 			{
 				if (RoleType == "Medic")
 				{
-					ConsultsList = Database.Consults.Where(t => t.Medic.Name == UserName).ToList();
+					ConsultsList = Database.Consults.Where(t => t.Medic.Email == UserMail).Include(t => t.Medic).Include(t => t.Patient).ToList();
 				}
 				else if  (RoleType == "Patient")
 				{
-					ConsultsList = Database.Consults.Where(t => t.Patient.Name == UserName).ToList();
+					ConsultsList = Database.Consults.Where(t => t.Patient.Email == UserMail).Include(t => t.Medic).Include(t => t.Patient).ToList();
 				}
 				else
 				{
@@ -96,12 +96,10 @@ namespace FinalAssignment.Controllers
 		private List<SelectListItem> _GetMedicsSelectList()
 		{
 			List<Medics> Medics = this._RetrieveMedicsList();
-			this._setMedicsCache(Medics);
 			List<SelectListItem> MedicsList = new List<SelectListItem>();
 			foreach (Medics Medic in Medics)
 			{
 				MedicsList.Add(new SelectListItem { Text = Medic.Name, Value = Medic.MedicKey.ToString() });
-				/* TODO bug here; it can't hold an Medic object, so a ViewModel is going to be necessary. Hold the value into something like SelectedValueId and then fetch the object accordingly */
 			}
 			return MedicsList;
 		}
@@ -109,7 +107,6 @@ namespace FinalAssignment.Controllers
 		private List<SelectListItem> _GetPatientsSelectList()
 		{
 			List<Patients> Patients = this._RetrievePatientsList();
-			this._setPatientsCache(Patients);
 			List<SelectListItem> PatientsList = new List<SelectListItem>();
 			foreach (Patients Patient in Patients)
 			{
@@ -120,26 +117,18 @@ namespace FinalAssignment.Controllers
 
 		private List<SelectListItem> _GetClassifications()
 		{
-			List<SelectListItem> ClassificationsList = new List<SelectListItem>();
-			ClassificationsList.Add(new SelectListItem { Text = "First Consult", Value = "1" });
-			ClassificationsList.Add(new SelectListItem { Text = "Re-consult", Value = "2" });
-			ClassificationsList.Add(new SelectListItem { Text = "Routine Consult", Value = "3" });
+			List<SelectListItem> ClassificationsList = new List<SelectListItem>
+			{
+				new SelectListItem { Text = "First Consult", Value = "1" },
+				new SelectListItem { Text = "Re-consult", Value = "2" },
+				new SelectListItem { Text = "Routine Consult", Value = "3" }
+			};
 			return ClassificationsList;
-		}
-
-		private void _setMedicsCache(List<Medics> MedicsList)
-		{
-			this._Medics = MedicsList;
-		}
-
-		private void _setPatientsCache(List<Patients> PatientsList)
-		{
-			this._Patients = PatientsList;
 		}
 
 		private List<Medics> _RetrieveMedicsList()
 		{
-			using (var Database = new DatabaseContext())
+			using (var Database = _Context)
 			{
 				return Database.Medics.ToList();
 			}
@@ -147,10 +136,35 @@ namespace FinalAssignment.Controllers
 
 		private List<Patients> _RetrievePatientsList()
 		{
-			using (var Database = new DatabaseContext())
+			using (var Database = _Context)
 			{
 				return Database.Patients.ToList();
 			}
+		}
+
+		private string _GetUserEmail()
+		{
+			return User.Claims.Where(c => c.Type == "UserMail").FirstOrDefault().Value;
+		}
+
+		private int _AttachMedicKey(DatabaseContext Context, CreateAssignmentViewModel Model)
+		{
+			string Email = this._GetUserEmail();
+			if (Model.SelectedMedicKey != null)
+			{
+				return int.Parse(Model.SelectedMedicKey);
+			}
+			return _Context.Medics.Where(t => t.Email == Email).FirstOrDefault().MedicKey;
+		}
+
+		private int _AttachPatientKey(DatabaseContext Context, CreateAssignmentViewModel Model)
+		{
+			string Email = this._GetUserEmail();
+			if (Model.SelectedPatientKey != null)
+			{
+				return int.Parse(Model.SelectedPatientKey);
+			}
+			return _Context.Patients.Where(t => t.Email == Email).FirstOrDefault().PatientKey;
 		}
 	}
 }
