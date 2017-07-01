@@ -1,11 +1,11 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using FinalAssignment.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinalAssignment.Util
+namespace FinalAssignment.Data
 {
 	public class UserManager
 	{
