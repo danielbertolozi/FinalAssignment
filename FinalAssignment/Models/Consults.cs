@@ -19,6 +19,7 @@ namespace FinalAssignment.Models
 		[DisplayName("Date")]
 		public DateTime Date { get; set; }
 		[Required]
+		[DataType(DataType.Time)]
 		public TimeSpan Duration { get; set; }
 		[Required]
 		[Range(1,3)]
