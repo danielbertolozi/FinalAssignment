@@ -45,7 +45,7 @@ namespace FinalAssignment.Models
 		[Required]
 		[Range(0, 1)]
 		public int Deleted { get; set; }
-		public ICollection<Availability> Availability { get; set; }
-		public ICollection<Consults> Consults { get; set; }
+		public virtual ICollection<Availability> Availability { get; set; }
+		public virtual ICollection<Consults> Consults { get; set; }
 	}
 }

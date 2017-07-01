@@ -23,6 +23,14 @@ namespace FinalAssignment.Models
 			new ConsultsMap(modelBuilder.Entity<Consults>());
 			new MedicsMap(modelBuilder.Entity<Medics>());
 			new PatientsMap(modelBuilder.Entity<Patients>());
+
+			//modelBuilder.Entity<Consults>().HasOne(t => t.Medic)
+			//            .WithMany(t => t.Consults)
+			//            .HasForeignKey(t => t.MedicKey);
+
+			//modelBuilder.Entity<Consults>().HasOne(t => t.Patient)
+						//.WithMany(t => t.Consults)
+						//.HasForeignKey(t => t.PatientKey);
 		}
 
 	}

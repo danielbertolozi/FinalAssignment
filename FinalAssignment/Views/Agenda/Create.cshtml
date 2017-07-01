@@ -42,12 +42,12 @@
 	    <div
 	        class="form-group">
 	         <label
-	            asp-for="SelectedMedicId"
+	            asp-for="SelectedMedicKey"
 	            class="control-label">
 	        </label>
 	        <div
 	            class="dropdown">
-	        @Html.DropDownListFor(model => model.SelectedMedicId, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
+	        @Html.DropDownListFor(model => model.SelectedMedicKey, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
 	        </div>
 	    </div>
 	}
@@ -55,12 +55,12 @@
 	    <div
 	        class="form-group">
 	         <label
-	            asp-for="SelectedPatientId"
+	            asp-for="SelectedPatientKey"
 	            class="control-label">
 	        </label>
 	        <div
 	            class="dropdown">
-	        @Html.DropDownListFor(model => model.SelectedPatientId, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
+	        @Html.DropDownListFor(model => model.SelectedPatientKey, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
 	        </div>
 	    </div>
 	}}

@@ -25,9 +25,13 @@ namespace FinalAssignment.ViewModels
 		[Range(1, 3)]
 		[DisplayName("Consult Type")]
 		public int Classification { get; set; }
+		public int MedicKey { get; set; }
+		public int PatientKey { get; set; }
 		[DisplayName("Medic")]
-		public string SelectedMedicId { get; set; }
+		public string SelectedMedicKey { get; set; }
 		[DisplayName("Patient")]
-		public string SelectedPatientId { get; set; }
+		public string SelectedPatientKey { get; set; }
+		public virtual Medics Medic { get; set; }
+		public virtual Patients Patient { get; set; }
 	}
 }

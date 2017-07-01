@@ -28,12 +28,12 @@ namespace FinalAssignment.Models.Mappings
 			entityBuilder.Property(t => t.Classification).HasColumnName("Classification");
 
 			entityBuilder.HasOne(t => t.Medic)
-			             .WithMany(t => t.Consults)
-			             .HasForeignKey(t => t.ConsultKey);
+						 .WithMany(t => t.Consults)
+			             .HasForeignKey(t => t.MedicKey);
 
 			entityBuilder.HasOne(t => t.Patient)
-			             .WithMany(t => t.Consults)
-			             .HasForeignKey(t => t.ConsultKey);
+						 .WithMany(t => t.Consults)
+			             .HasForeignKey(t => t.PatientKey);
 		}
 	}
 }

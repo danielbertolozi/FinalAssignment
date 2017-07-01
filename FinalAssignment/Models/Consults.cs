@@ -24,6 +24,8 @@ namespace FinalAssignment.Models
 		[Required]
 		[Range(1,3)]
 		public int Classification { get; set; }
+		public int MedicKey { get; set; }
+		public int PatientKey { get; set; }
 		public virtual Medics Medic { get; set; }
 		public virtual Patients Patient { get; set; }
 	}
