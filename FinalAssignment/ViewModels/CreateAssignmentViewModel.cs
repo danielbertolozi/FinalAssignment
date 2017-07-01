@@ -19,7 +19,7 @@ namespace FinalAssignment.ViewModels
 		[DisplayName("Date")]
 		public DateTime Date { get; set; }
 		[Required]
-		[DataType(DataType.Time)]
+		[DataType(DataType.Duration)]
 		public TimeSpan Duration { get; set; }
 		[Required]
 		[Range(1, 3)]
@@ -31,7 +31,5 @@ namespace FinalAssignment.ViewModels
 		public string SelectedMedicKey { get; set; }
 		[DisplayName("Patient")]
 		public string SelectedPatientKey { get; set; }
-		public virtual Medics Medic { get; set; }
-		public virtual Patients Patient { get; set; }
 	}
 }
