@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 
 namespace FinalAssignment.Controllers
 {
@@ -35,6 +36,31 @@ namespace FinalAssignment.Controllers
 			@ViewBag.AtendeesList = UserRole == "Patient" ? _GetMedicsList() : _GetPatientsList();
 			@ViewBag.ClassificationList = _GetClassifications();
 			@ViewBag.UserRole = UserRole;
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> CreateAsync(Consults Consult)
+		{
+			/* TODO Handle exception for Consult Type as soon as DB have the trigger ready */
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					using (var Database = new DatabaseContext())
+					{
+						Database.Add(Consult);
+						await Database.SaveChangesAsync();
+					}
+					@ViewBag.Success = "The Assignment has been created successfully";
+					return RedirectToAction("Agenda", "Agenda");
+				}
+			}
+			catch (Exception e)
+			{
+				Console.Write(e);
+				return View();
+			}
 			return View();
 		}
 
