@@ -89,7 +89,7 @@ namespace FinalAssignment.Data
 				Genre = 'M',
 				Name = "Jonat Silveira",
 				Password = "12345678",
-				Phone = "(51) 12931293",
+				Phone = "(51) 12931293"
 			});
 			return PatientsList;
 		}

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using FinalAssignment.Data;
+using FinalAssignment.Models;
 
 namespace FinalAssignment.ViewModels
 {
 	public class AgendaViewModel
 	{
-		public AgendaViewModel() {}
-		public List<CalendarEvent> CalendarEventList { get; set; }
+		public List<Consults> ConsultsList { get; set; }
 	}
 }

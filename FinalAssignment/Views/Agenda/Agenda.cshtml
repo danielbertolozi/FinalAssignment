@@ -1,4 +1,10 @@
-﻿@model FinalAssignment.ViewModels.AgendaViewModel
+﻿﻿@model FinalAssignment.ViewModels.AgendaViewModel
+<span
+	class="text-success"
+    asp-for="ViewBag.Success"></span>
+<span
+    class="text-danger"
+    asp-for="ViewBag.Error"></span>
 <div
     id="calendarList">
 	<table
@@ -14,7 +20,7 @@
             </tr>
         </thead>
 		<tbody>
-		@{foreach (var Event in Model.CalendarEventList) 
+		@{foreach (var Event in Model.ConsultsList) 
 		{
 			<tr>
                 <td>
@@ -39,4 +45,11 @@
 		}}
 	    </tbody>
 	</table>
+</div>
+<div>
+    <a asp-area="" asp-controller="Agenda" asp-action="Create">
+	    <button
+            class="btn btn-default">New
+		</button>
+	</a>
 </div>

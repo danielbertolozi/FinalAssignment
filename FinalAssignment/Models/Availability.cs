@@ -6,9 +6,6 @@ namespace FinalAssignment.Models
 {
 	public class Availability
 	{
-		public Availability()
-		{
-		}
 		[Required]
 		public int AvailabilityKey { get; set; }
 		[Required]

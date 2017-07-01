@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using FinalAssignment.Models;
 
-namespace FinalAssignment.Models
+namespace FinalAssignment.ViewModels
 {
-	public class Consults
+	public class CreateAssignmentViewModel
 	{
 		[Required]
 		public int ConsultKey { get; set; }
@@ -19,14 +19,17 @@ namespace FinalAssignment.Models
 		[DisplayName("Date")]
 		public DateTime Date { get; set; }
 		[Required]
-		[DataType(DataType.Time)]
+		[DataType(DataType.Duration)]
 		public TimeSpan Duration { get; set; }
 		[Required]
-		[Range(1,3)]
+		[Range(1, 3)]
+		[DisplayName("Consult Type")]
 		public int Classification { get; set; }
 		public int MedicKey { get; set; }
 		public int PatientKey { get; set; }
-		public virtual Medics Medic { get; set; }
-		public virtual Patients Patient { get; set; }
+		[DisplayName("Medic")]
+		public string SelectedMedicKey { get; set; }
+		[DisplayName("Patient")]
+		public string SelectedPatientKey { get; set; }
 	}
 }
