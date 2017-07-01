@@ -40,9 +40,10 @@ namespace FinalAssignment.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CreateAsync(Consults Consult)
+		public async Task<IActionResult> Create(Consults Consult)
 		{
 			/* TODO Handle exception for Consult Type as soon as DB have the trigger ready */
+			/* Validate if date isn't previous than today */
 			try
 			{
 				if (ModelState.IsValid)
