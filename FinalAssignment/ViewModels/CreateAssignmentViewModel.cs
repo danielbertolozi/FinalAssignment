@@ -23,6 +23,7 @@ namespace FinalAssignment.ViewModels
 		public TimeSpan Duration { get; set; }
 		[Required]
 		[Range(1, 3)]
+		[DisplayName("Consult Type")]
 		public int Classification { get; set; }
 		[DisplayName("Medic")]
 		public string SelectedMedicId { get; set; }
