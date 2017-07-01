@@ -1,4 +1,4 @@
-﻿@model FinalAssignment.Models.Consults
+﻿@model FinalAssignment.ViewModels.CreateAssignmentViewModel
 
 <script type="text/javascript">
     $(function () {
@@ -42,12 +42,12 @@
 	    <div
 	        class="form-group">
 	         <label
-	            asp-for="Medic"
+	            asp-for="SelectedMedicId"
 	            class="control-label">
 	        </label>
 	        <div
 	            class="dropdown">
-	        @Html.DropDownListFor(model => model.Medic, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
+	        @Html.DropDownListFor(model => model.SelectedMedicId, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
 	        </div>
 	    </div>
 	}
@@ -55,12 +55,12 @@
 	    <div
 	        class="form-group">
 	         <label
-	            asp-for="Medic"
+	            asp-for="SelectedPatientId"
 	            class="control-label">
 	        </label>
 	        <div
 	            class="dropdown">
-	        @Html.DropDownListFor(model => model.Patient, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
+	        @Html.DropDownListFor(model => model.SelectedPatientId, ViewBag.AtendeesList as List<SelectListItem>, new { @class = "dropdown" })
 	        </div>
 	    </div>
 	}}
