@@ -9,16 +9,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Security.Claims;
+using FinalAssignment.Data;
 
 namespace FinalAssignment.Controllers
 {
 	public class AccountController : Controller
 	{
-		private DatabaseContext _Context;
+		private readonly DatabaseContext _Context;
+		private readonly UserManager _UserManager;
 
-		public AccountController (DatabaseContext Context)
+		public AccountController (DatabaseContext Context, UserManager UserManager)
 		{
 			this._Context = Context;
+			this._UserManager = UserManager;
 		}
 
 		[HttpGet]
@@ -111,7 +114,6 @@ namespace FinalAssignment.Controllers
 
 		private Object _MapViewModel(LoginViewModel Model)
 		{
-
 			if (Model.AccountType == 'M')
 			{
 				return Mapper.Map<Medics>(Model);
@@ -126,33 +128,13 @@ namespace FinalAssignment.Controllers
 		{
 			if (Model.AccountType == 'M')
 			{
-				return this._VerifyMedicLogon(Database, Model);
+				return this._UserManager.VerifyMedicLogon(Model.Email, Model.Password);
 			}
 			else if (Model.AccountType == 'P')
 			{
-				return this._VerifyPatientLogon(Database, Model);
+				return this._UserManager.VerifyPatientLogon(Model.Email, Model.Password);
 			}
 			return null;
-		}
-
-		private Medics _VerifyMedicLogon(DatabaseContext Database, LoginViewModel Model)
-		{
-			Medics Result = Database
-								.Medics
-								.Where(p => p.Email == Model.Email &&
-									   p.Password == Model.Password)
-								.FirstOrDefault();
-			return Result;
-		}
-
-		private Patients _VerifyPatientLogon(DatabaseContext Database, LoginViewModel Model)
-		{
-			Patients Result = Database
-								.Patients
-								.Where(p => p.Email == Model.Email &&
-									   p.Password == Model.Password)
-								.FirstOrDefault();
-			return Result;
 		}
 
 		private ClaimsPrincipal _GetClaimsPrincipal(char AccountType, string Email)

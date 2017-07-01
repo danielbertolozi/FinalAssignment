@@ -16,10 +16,12 @@ namespace FinalAssignment.Controllers
 	public class AgendaController : Controller
 	{
 		private DatabaseContext _Context;
+		private UserManager _UserManager;
 
-		public AgendaController(DatabaseContext Context)
+		public AgendaController(DatabaseContext Context, UserManager UserManager)
 		{
 			this._Context = Context;
+			this._UserManager = UserManager;
 		}
 
 		[HttpGet]
@@ -34,9 +36,9 @@ namespace FinalAssignment.Controllers
 		[HttpGet]
 		public IActionResult Create()
 		{
-			string UserRole = User.Claims.Where(c => c.Type == "Role").FirstOrDefault().Value;
+			string UserRole = _UserManager.GetUserRole(this.User).Value;
 			@ViewBag.AtendeesList = UserRole == "Patient" ? _GetMedicsSelectList() : _GetPatientsSelectList();
-			@ViewBag.ClassificationList = _GetClassifications();
+			@ViewBag.ClassificationList = _GetClassificationsSelectListItem();
 			@ViewBag.UserRole = UserRole;
 			return View();
 		}
@@ -51,8 +53,8 @@ namespace FinalAssignment.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					Model.MedicKey = this._AttachMedicKey(_Context, Model);
-					Model.PatientKey = this._AttachPatientKey(_Context, Model);
+					Model.MedicKey = this._AttachMedicKey(_Context, Model.SelectedMedicKey);
+					Model.PatientKey = this._AttachPatientKey(_Context, Model.SelectedPatientKey);
 					Consults Consult = Mapper.Map<Consults>(Model);
 					_Context.Add(Consult);
 					_Context.SaveChanges();
@@ -71,31 +73,28 @@ namespace FinalAssignment.Controllers
 
 		private List<Consults> _FetchEventsFromUser()
 		{
-			String UserMail = _GetUserEmail();
-			Claim Role = User.Claims.FirstOrDefault(t => t.Type == "Role");
+			String UserMail = this._UserManager.GetUserEmail(this.User);
+			Claim Role = this._UserManager.GetUserRole(this.User);
 			String RoleType = Role.Value;
 			List<Consults> ConsultsList = new List<Consults>();
-			using (var Database = _Context)
+			if (RoleType == "Medic")
 			{
-				if (RoleType == "Medic")
-				{
-					ConsultsList = Database.Consults.Where(t => t.Medic.Email == UserMail).Include(t => t.Medic).Include(t => t.Patient).ToList();
-				}
-				else if  (RoleType == "Patient")
-				{
-					ConsultsList = Database.Consults.Where(t => t.Patient.Email == UserMail).Include(t => t.Medic).Include(t => t.Patient).ToList();
-				}
-				else
-				{
-					throw new Exception("Could not retrieve User Role");
-				}
+				ConsultsList = _Context.Consults.Where(t => t.Medic.Email == UserMail).Include(t => t.Medic).Include(t => t.Patient).ToList();
+			}
+			else if  (RoleType == "Patient")
+			{
+				ConsultsList = _Context.Consults.Where(t => t.Patient.Email == UserMail).Include(t => t.Medic).Include(t => t.Patient).ToList();
+			}
+			else
+			{
+				throw new Exception("Could not retrieve User Role");
 			}
 			return ConsultsList;
 		}
 
 		private List<SelectListItem> _GetMedicsSelectList()
 		{
-			List<Medics> Medics = this._RetrieveMedicsList();
+			List<Medics> Medics = this._UserManager.RetrieveMedicsList();
 			List<SelectListItem> MedicsList = new List<SelectListItem>();
 			foreach (Medics Medic in Medics)
 			{
@@ -106,7 +105,7 @@ namespace FinalAssignment.Controllers
 
 		private List<SelectListItem> _GetPatientsSelectList()
 		{
-			List<Patients> Patients = this._RetrievePatientsList();
+			List<Patients> Patients = this._UserManager.RetrievePatientsList();
 			List<SelectListItem> PatientsList = new List<SelectListItem>();
 			foreach (Patients Patient in Patients)
 			{
@@ -115,7 +114,7 @@ namespace FinalAssignment.Controllers
 			return PatientsList;
 		}
 
-		private List<SelectListItem> _GetClassifications()
+		private List<SelectListItem> _GetClassificationsSelectListItem()
 		{
 			List<SelectListItem> ClassificationsList = new List<SelectListItem>
 			{
@@ -126,43 +125,22 @@ namespace FinalAssignment.Controllers
 			return ClassificationsList;
 		}
 
-		private List<Medics> _RetrieveMedicsList()
+		private int _AttachMedicKey(DatabaseContext Context, string PatientKey)
 		{
-			using (var Database = _Context)
+			string Email = this._UserManager.GetUserEmail(this.User);
+			if (PatientKey.Length > 0)
 			{
-				return Database.Medics.ToList();
-			}
-		}
-
-		private List<Patients> _RetrievePatientsList()
-		{
-			using (var Database = _Context)
-			{
-				return Database.Patients.ToList();
-			}
-		}
-
-		private string _GetUserEmail()
-		{
-			return User.Claims.Where(c => c.Type == "UserMail").FirstOrDefault().Value;
-		}
-
-		private int _AttachMedicKey(DatabaseContext Context, CreateAssignmentViewModel Model)
-		{
-			string Email = this._GetUserEmail();
-			if (Model.SelectedMedicKey != null)
-			{
-				return int.Parse(Model.SelectedMedicKey);
+				return int.Parse(PatientKey);
 			}
 			return _Context.Medics.Where(t => t.Email == Email).FirstOrDefault().MedicKey;
 		}
 
-		private int _AttachPatientKey(DatabaseContext Context, CreateAssignmentViewModel Model)
+		private int _AttachPatientKey(DatabaseContext Context, string PatientKey)
 		{
-			string Email = this._GetUserEmail();
-			if (Model.SelectedPatientKey != null)
+			string Email = this._UserManager.GetUserEmail(this.User);
+			if (PatientKey.Length > 0)
 			{
-				return int.Parse(Model.SelectedPatientKey);
+				return int.Parse(PatientKey);
 			}
 			return _Context.Patients.Where(t => t.Email == Email).FirstOrDefault().PatientKey;
 		}
