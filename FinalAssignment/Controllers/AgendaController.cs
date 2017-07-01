@@ -15,6 +15,9 @@ namespace FinalAssignment.Controllers
 	public class AgendaController : Controller
 	{
 		private DatabaseContext _Context;
+		private List<Medics> _Medics;
+		private List<Patients> _Patients;
+
 		public AgendaController(DatabaseContext Context)
 		{
 			this._Context = Context;
@@ -33,7 +36,7 @@ namespace FinalAssignment.Controllers
 		public IActionResult Create()
 		{
 			string UserRole = User.Claims.Where(c => c.Type == "Role").FirstOrDefault().Value;
-			@ViewBag.AtendeesList = UserRole == "Patient" ? _GetMedicsList() : _GetPatientsList();
+			@ViewBag.AtendeesList = UserRole == "Patient" ? _GetMedicsSelectList() : _GetPatientsSelectList();
 			@ViewBag.ClassificationList = _GetClassifications();
 			@ViewBag.UserRole = UserRole;
 			return View();
@@ -90,32 +93,29 @@ namespace FinalAssignment.Controllers
 			return ConsultsList;
 		}
 
-		private List<SelectListItem> _GetMedicsList()
+		private List<SelectListItem> _GetMedicsSelectList()
 		{
-			using (DatabaseContext Database = new DatabaseContext())
+			List<Medics> Medics = this._RetrieveMedicsList();
+			this._setMedicsCache(Medics);
+			List<SelectListItem> MedicsList = new List<SelectListItem>();
+			foreach (Medics Medic in Medics)
 			{
-				List<Medics> Medics = Database.Medics.ToList();
-				List<SelectListItem> MedicsList = new List<SelectListItem>();
-				foreach (Medics Medic in Medics)
-				{
-					MedicsList.Add(new SelectListItem { Text = Medic.Name, Value = Medic.MedicKey.ToString() });
-				}
-				return MedicsList;
+				MedicsList.Add(new SelectListItem { Text = Medic.Name, Value = Medic.MedicKey.ToString() });
+				/* TODO bug here; it can't hold an Medic object, so a ViewModel is going to be necessary. Hold the value into something like SelectedValueId and then fetch the object accordingly */
 			}
+			return MedicsList;
 		}
 
-		private List<SelectListItem> _GetPatientsList()
+		private List<SelectListItem> _GetPatientsSelectList()
 		{
-			using (DatabaseContext Database = new DatabaseContext())
+			List<Patients> Patients = this._RetrievePatientsList();
+			this._setPatientsCache(Patients);
+			List<SelectListItem> PatientsList = new List<SelectListItem>();
+			foreach (Patients Patient in Patients)
 			{
-				List<Patients> Patients = Database.Patients.ToList();
-				List<SelectListItem> PatientsList = new List<SelectListItem>();
-				foreach (Patients Patient in Patients)
-				{
-					PatientsList.Add(new SelectListItem { Text = Patient.Name, Value = Patient.PatientKey.ToString() });
-				}
-				return PatientsList;
+				PatientsList.Add(new SelectListItem { Text = Patient.Name, Value = Patient.PatientKey.ToString() });
 			}
+			return PatientsList;
 		}
 
 		private List<SelectListItem> _GetClassifications()
@@ -125,6 +125,32 @@ namespace FinalAssignment.Controllers
 			ClassificationsList.Add(new SelectListItem { Text = "Re-consult", Value = "2" });
 			ClassificationsList.Add(new SelectListItem { Text = "Routine Consult", Value = "3" });
 			return ClassificationsList;
+		}
+
+		private void _setMedicsCache(List<Medics> MedicsList)
+		{
+			this._Medics = MedicsList;
+		}
+
+		private void _setPatientsCache(List<Patients> PatientsList)
+		{
+			this._Patients = PatientsList;
+		}
+
+		private List<Medics> _RetrieveMedicsList()
+		{
+			using (var Database = new DatabaseContext())
+			{
+				return Database.Medics.ToList();
+			}
+		}
+
+		private List<Patients> _RetrievePatientsList()
+		{
+			using (var Database = new DatabaseContext())
+			{
+				return Database.Patients.ToList();
+			}
 		}
 	}
 }
