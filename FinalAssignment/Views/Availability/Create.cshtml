@@ -1,0 +1,56 @@
+﻿@model FinalAssignment.Models.Availability
+
+<script type="text/javascript">
+    $(function () {
+       $('.datepicker').datepicker();
+    });
+</script>
+
+<h2>Create new Availability Event</h2>
+
+<p>Day of week</p>
+<p>Start Time</p>
+<p>End Time</p>
+<p>IsAllDay</p>
+
+<span asp-for="ViewBag.Error"
+      class="text-danger"></span>
+<form asp-controller="Agenda"
+      asp-action="Create"
+      method="post">
+    <div class="form-group">
+        <label asp-for="DayOfWeek"
+               class="control-label" />
+        <div class="dropdown">
+            @Html.DropDownListFor(model => model.DayOfWeek, ViewBag.DaysOfWeek as List<SelectListItem>, new { @class = "dropdown" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="StartTime"
+               class="control-label" />
+        <input asp-for="StartTime"
+               class="form-control" />
+        <span asp-validation-for="StartTime"
+              class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EndTime"
+               class="control-label" />
+        <input asp-for="EndTime"
+               class="form-control" />
+        <span asp-validation-for="EndTime"
+              class="text-danger"></span>
+    </div>
+	<div 
+		class="form-group">
+        <label asp-for="IsAllDay"
+           class="control-label" />
+        <div class="col-md-10">
+            @Html.CheckBoxFor(m => m.IsAllDay, new { @checked = "checked"})   
+        </div>
+    </div>
+	<div
+        class="form-group">
+        <input type="submit" class="btn btn-primary" value="Create" />
+    </div>
+</form>

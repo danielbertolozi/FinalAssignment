@@ -1,4 +1,5 @@
-﻿<div
+﻿@model FinalAssignment.ViewModels.AvailabilityViewModel
+<div
 	style="margin-top: 5%">
     <table
 		class="table table-striped table-bordered">
@@ -13,6 +14,15 @@
 		</thead>
 		<tbody>
 		    <tr>
+				@{foreach (var Event in Model.AvailabilityList)
+				{
+				    <td>
+			        @{foreach (var SubEvent in @Event)
+				    {
+					    <div></div>
+				    }}
+				    </td>
+				}}
 			    <td>1</td>
 				<td>2</td>
 				<td>3</td>
