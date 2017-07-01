@@ -53,14 +53,15 @@ namespace FinalAssignment.Controllers
 						Database.Add(Consult);
 						await Database.SaveChangesAsync();
 					}
-					@ViewBag.Success = "The Assignment has been created successfully";
+					@ViewBag.Success = "The Assignment has been created successfully!";
 					return RedirectToAction("Agenda", "Agenda");
 				}
 			}
 			catch (Exception e)
 			{
 				Console.Write(e);
-				return View();
+				@ViewBag.Error = "An error occurred.";
+				return RedirectToAction("Agenda", "Agenda");
 			}
 			return View();
 		}
