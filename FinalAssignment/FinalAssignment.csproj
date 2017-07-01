@@ -30,5 +30,6 @@
     <Folder Include="Views\Agenda\" />
     <Folder Include="Data\" />
     <Folder Include="Util\" />
+    <Folder Include="Views\Availability\" />
   </ItemGroup>
 </Project>

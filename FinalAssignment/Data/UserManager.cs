@@ -5,7 +5,7 @@ using FinalAssignment.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinalAssignment.Data
+namespace FinalAssignment.Util
 {
 	public class UserManager
 	{
