@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿﻿using AutoMapper;
 using FinalAssignment.Models;
 using FinalAssignment.Util;
 using FinalAssignment.ViewModels;
@@ -135,12 +135,12 @@ namespace FinalAssignment.Controllers
 			return ClassificationsList;
 		}
 
-		private int _AttachMedicKey(string PatientKey)
+		private int _AttachMedicKey(string MedicKey)
 		{
 			string Email = this._UserManager.GetUserEmail(this.User);
-			if (PatientKey.Length > 0)
+			if (MedicKey.Length > 0)
 			{
-				return int.Parse(PatientKey);
+				return int.Parse(MedicKey);
 			}
 			return _UserManager.GetMedicKeyByEmail(Email);
 		}

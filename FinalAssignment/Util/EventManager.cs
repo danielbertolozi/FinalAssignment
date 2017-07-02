@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿﻿﻿using System;
 using FinalAssignment.Models;
 using FinalAssignment.Data;
 using System.Linq;
@@ -46,7 +46,7 @@ namespace FinalAssignment.Util
 			{
 				return 1;
 			}
-			if (_CheckAgainstRoutine(PatientKey))
+			if (_CheckAgainstReConsult(PatientKey))
 			{
 				return 2;
 			}
@@ -58,7 +58,7 @@ namespace FinalAssignment.Util
 			return _Context.Consults.Where(t => t.PatientKey == PatientKey).ToArray().Length <= 0;
 		}
 
-		private bool _CheckAgainstRoutine(int PatientKey)
+		private bool _CheckAgainstReConsult(int PatientKey)
 		{
 			return DateTime.Now.Subtract(_Context.Consults.Where(t => t.PatientKey == PatientKey).OrderBy(t => t.Date).LastOrDefault().Date) > new TimeSpan(30, 0, 0, 0); 
 		}
