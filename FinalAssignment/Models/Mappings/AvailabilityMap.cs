@@ -27,7 +27,7 @@ namespace FinalAssignment.Models.Mappings
 
 			entityBuilder.HasOne(t => t.Medics)
 						 .WithMany(t => t.Availability)
-						 .HasForeignKey(t => t.AvailabilityKey);
+			             .HasForeignKey(t => t.MedicKey);
 		}
 	}
 }
