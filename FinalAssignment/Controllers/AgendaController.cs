@@ -10,45 +10,53 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using FinalAssignment.Util;
 
 namespace FinalAssignment.Controllers
 {
 	public class AgendaController : Controller
 	{
-		private DatabaseContext _Context;
-		private UserManager _UserManager;
+		private readonly DatabaseContext _Context;
+		private readonly UserManager _UserManager;
+		private readonly EventManager _EventManager;
 
 		public AgendaController(DatabaseContext Context, UserManager UserManager)
 		{
 			this._Context = Context;
 			this._UserManager = UserManager;
+			string UserMail = _UserManager.GetUserEmail(this.User);
+			this._EventManager = new EventManager(UserMail, new UserManager());
 		}
 
 		[HttpGet]
 		public IActionResult Agenda()
 		{
-			AgendaViewModel Model = new AgendaViewModel();
-			List<Consults> ConsultsList = this._FetchEventsFromUser();
-			Model.ConsultsList = ConsultsList;
+			AgendaViewModel Model = this._LoadAgendaData();
 			return View(Model);
 		}
 
 		[HttpGet]
 		public IActionResult Create()
 		{
-			string UserRole = _UserManager.GetUserRole(this.User).Value;
-			@ViewBag.AtendeesList = UserRole == "Patient" ? _GetMedicsSelectList() : _GetPatientsSelectList();
-			@ViewBag.ClassificationList = _GetClassificationsSelectListItem();
-			@ViewBag.UserRole = UserRole;
+			this._LoadCreateData();
 			return View();
 		}
 
 		[HttpPost]
 		public IActionResult Create(CreateAssignmentViewModel Model)
 		{
-			/* TODO Handle exception for Consult Type as soon as DB have the trigger ready */
-			/* TODO Validate if date isn't previous than today */
-			/* TODO Verify meeting time as it isn't working */
+			if (Model.Date.CompareTo(DateTime.Now) < 0)
+			{
+				@ViewBag.Error = "Please insert a date ahead from today.";
+				this._LoadCreateData();
+				return View(Model);
+			}
+			int NewClassification = this._EventManager.ReClassifyConsult();
+			if (NewClassification != Model.Classification)
+			{
+				Model.Classification = NewClassification;
+				@ViewBag.Error = "The consult had to be reclassified due to constraints.";
+			}
 			try
 			{
 				if (ModelState.IsValid)
@@ -65,8 +73,9 @@ namespace FinalAssignment.Controllers
 			catch (Exception e)
 			{
 				Console.Write(e);
-				@ViewBag.Error = "An error occurred.";
-				return RedirectToAction("Agenda", "Agenda");
+				@ViewBag.Error = "An internal error occurred.";
+				this._LoadCreateData();
+				return View(Model);
 			}
 			return View();
 		}
@@ -143,6 +152,22 @@ namespace FinalAssignment.Controllers
 				return int.Parse(PatientKey);
 			}
 			return _UserManager.GetPatientKeyByEmail(Email);
+		}
+
+		private AgendaViewModel _LoadAgendaData()
+		{
+			AgendaViewModel Model = new AgendaViewModel();
+			List<Consults> ConsultsList = this._FetchEventsFromUser();
+			Model.ConsultsList = ConsultsList;
+			return Model;
+		}
+
+		private void _LoadCreateData()
+		{
+			string UserRole = _UserManager.GetUserRole(this.User).Value;
+			@ViewBag.AtendeesList = UserRole == "Patient" ? _GetMedicsSelectList() : _GetPatientsSelectList();
+			@ViewBag.ClassificationList = _GetClassificationsSelectListItem();
+			@ViewBag.UserRole = UserRole;
 		}
 	}
 }
