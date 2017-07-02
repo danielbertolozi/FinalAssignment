@@ -33,10 +33,18 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-					<li><a asp-area="" asp-controller="Account" asp-action="Create">Create New Account</a></li>
-					<li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
-					<li><a asp-area="" asp-controller="Agenda" asp-action="Agenda">Agenda</a></li>
-					<li><a asp-area="" asp-controller="Availability" asp-action="Configure">Availability</a></li>
+					@{if (User.Identity.IsAuthenticated) 
+					{
+					    <li><a asp-area="" asp-controller="Agenda" asp-action="Agenda">Agenda</a></li>
+                        <li><a asp-area="" asp-controller="Availability" asp-action="Configure">Availability</a></li>
+						<li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+					}
+                    else 
+					{
+						<li><a asp-area="" asp-controller="Account" asp-action="Create">Create New Account</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+					}
+					}
                 </ul>
             </div>
         </div>

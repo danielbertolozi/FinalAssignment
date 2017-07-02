@@ -1,13 +1,15 @@
-﻿using System;
+﻿using AutoMapper;
+using FinalAssignment.Data;
+using FinalAssignment.Models;
+using FinalAssignment.Util;
+using FinalAssignment.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using FinalAssignment.Data;
-using FinalAssignment.Models;
-using FinalAssignment.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 namespace FinalAssignment.Controllers
 {
@@ -21,6 +23,7 @@ namespace FinalAssignment.Controllers
 			this._UserManager = UserManager;
 		}
 
+		[Authorize]
 		[HttpGet]
 		public IActionResult Configure()
 		{
@@ -32,6 +35,7 @@ namespace FinalAssignment.Controllers
 			return View(Model);
 		}
 
+		[Authorize]
 		[HttpGet]
 		public IActionResult Create()
 		{
@@ -47,6 +51,7 @@ namespace FinalAssignment.Controllers
 			return View();
 		}
 
+		[Authorize]
 		[HttpPost]
 		public async Task<IActionResult> Create(Availability Model)
 		{

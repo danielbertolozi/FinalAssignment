@@ -1,15 +1,16 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using FinalAssignment.ViewModels;
+﻿using AutoMapper;
+using FinalAssignment.Data;
 using FinalAssignment.Models;
-using AutoMapper;
-using System.Threading.Tasks;
+using FinalAssignment.Util;
+using FinalAssignment.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using FinalAssignment.Data;
+using System.Threading.Tasks;
+using System;
 
 namespace FinalAssignment.Controllers
 {
@@ -95,6 +96,17 @@ namespace FinalAssignment.Controllers
 			{
 				@ViewBag.Error = "Could not create account. " + e.Message;
 				return View();
+			}
+			return RedirectToAction("Index", "Home");
+		}
+
+		[Authorize]
+		public async Task<IActionResult> Logout()
+		{
+			await HttpContext.Authentication.SignOutAsync("CookieMiddleware");
+			foreach (var Key in HttpContext.Request.Cookies.Keys)
+			{
+				HttpContext.Response.Cookies.Delete(Key);
 			}
 			return RedirectToAction("Index", "Home");
 		}
