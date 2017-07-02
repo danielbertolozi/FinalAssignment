@@ -11,8 +11,9 @@ namespace FinalAssignment.Util
 		private readonly Patients _PatientAccount;
 		private readonly DatabaseContext _Context;
 
-		public EventManager(string UserMail, UserManager UserManager)
+		public EventManager(string UserMail, UserManager UserManager, DatabaseContext Context)
 		{
+			this._Context = Context;
 			this._UserManager = UserManager;
 			try
 			{
@@ -41,23 +42,23 @@ namespace FinalAssignment.Util
 		public int ReClassifyConsult()
 		{
 			var PatientKey = this._PatientAccount.PatientKey;
-			if (CheckAgainstFirstConsult(PatientKey))
+			if (_CheckAgainstFirstConsult(PatientKey))
 			{
 				return 1;
 			}
-			if (CheckAgainstRoutine(PatientKey))
+			if (_CheckAgainstRoutine(PatientKey))
 			{
 				return 2;
 			}
 			return 3;
 		}
 
-		private bool CheckAgainstFirstConsult(int PatientKey)
+		private bool _CheckAgainstFirstConsult(int PatientKey)
 		{
 			return _Context.Consults.Where(t => t.PatientKey == PatientKey).ToArray().Length <= 0;
 		}
 
-		private bool CheckAgainstRoutine(int PatientKey)
+		private bool _CheckAgainstRoutine(int PatientKey)
 		{
 			return DateTime.Now.Subtract(_Context.Consults.Where(t => t.PatientKey == PatientKey).OrderBy(t => t.Date).LastOrDefault().Date) > new TimeSpan(30, 0, 0, 0); 
 		}
