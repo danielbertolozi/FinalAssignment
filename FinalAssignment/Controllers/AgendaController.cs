@@ -1,16 +1,16 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using FinalAssignment.Data;
-using FinalAssignment.ViewModels;
+﻿using AutoMapper;
 using FinalAssignment.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using FinalAssignment.Util;
+using FinalAssignment.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System;
 
 namespace FinalAssignment.Controllers
 {
@@ -18,16 +18,14 @@ namespace FinalAssignment.Controllers
 	{
 		private readonly DatabaseContext _Context;
 		private readonly UserManager _UserManager;
-		private readonly EventManager _EventManager;
 
 		public AgendaController(DatabaseContext Context, UserManager UserManager)
 		{
 			this._Context = Context;
 			this._UserManager = UserManager;
-			string UserMail = _UserManager.GetUserEmail(this.User);
-			this._EventManager = new EventManager(UserMail, new UserManager());
 		}
 
+		[Authorize]
 		[HttpGet]
 		public IActionResult Agenda()
 		{
@@ -35,6 +33,7 @@ namespace FinalAssignment.Controllers
 			return View(Model);
 		}
 
+		[Authorize]
 		[HttpGet]
 		public IActionResult Create()
 		{
@@ -42,16 +41,18 @@ namespace FinalAssignment.Controllers
 			return View();
 		}
 
+		[Authorize]
 		[HttpPost]
 		public IActionResult Create(CreateAssignmentViewModel Model)
 		{
+			EventManager EventManager = new EventManager(_UserManager.GetUserEmail(this.User), _UserManager, _Context);
 			if (Model.Date.CompareTo(DateTime.Now) < 0)
 			{
 				@ViewBag.Error = "Please insert a date ahead from today.";
 				this._LoadCreateData();
 				return View(Model);
 			}
-			int NewClassification = this._EventManager.ReClassifyConsult();
+			int NewClassification = EventManager.ReClassifyConsult();
 			if (NewClassification != Model.Classification)
 			{
 				Model.Classification = NewClassification;

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using FinalAssignment.Models;
 using FinalAssignment.Data;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace FinalAssignment.Util
 
 		}
 
-		public EventManager(Patients Patient, UserManager UserManager)
+		public EventManager(Patients Patient, UserManager UserManager, DatabaseContext Context)
 		{
 			this._UserManager = UserManager;
 			this._PatientAccount = Patient;
