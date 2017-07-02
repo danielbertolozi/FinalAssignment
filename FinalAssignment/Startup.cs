@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using FinalAssignment.Models;
 using FinalAssignment.Data;
+using FinalAssignment.Util;
 using AutoMapper;
 using FinalAssignment.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -41,6 +42,7 @@ namespace FinalAssignment
 			// Add framework services.
 			services.AddMvc();
 			services.AddSingleton<UserManager>();
+			services.AddSingleton<EventManager>();
 			services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
 			services.AddAuthorization(options =>
 			                          options.AddPolicy("Medic", policy => policy.RequireClaim("Role", "Medic"))                         
