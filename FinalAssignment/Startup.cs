@@ -40,6 +40,7 @@ namespace FinalAssignment
 		{
 			// Add framework services.
 			services.AddMvc();
+			services.AddSingleton<UserManager>();
 			services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
 			services.AddAuthorization(options =>
 			                          options.AddPolicy("Medic", policy => policy.RequireClaim("Role", "Medic"))                         
@@ -73,6 +74,8 @@ namespace FinalAssignment
 				Mapper.CreateMap<LoginViewModel, Medics>();
 				Mapper.CreateMap<CreateAssignmentViewModel, Consults>();
 				Mapper.CreateMap<Consults, CreateAssignmentViewModel>();
+				Mapper.CreateMap<List<Availability>, List<CreateAvailabilityViewModel>>();
+				Mapper.CreateMap<List<CreateAvailabilityViewModel>, List<Availability>>();
 			});
 
 			app.UseStaticFiles();

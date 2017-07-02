@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using FinalAssignment.Models;
 
-namespace FinalAssignment.Models
+namespace FinalAssignment.ViewModels
 {
-	public class Availability
+	public class CreateAvailabilityViewModel
 	{
 		[Required]
 		public int AvailabilityKey { get; set; }
 		[Required]
 		[Range(0,6)]
-		[DisplayName("Day of the Week")]
+		[DisplayName("Select the Day of the Week:")]
 		public int DayOfWeek { get; set; }
 		[Required]
 		[DataType(DataType.Time)]
-		[DisplayName("Start:")]
+		[DisplayName("Enter the beginning time:")]
 		public TimeSpan StartTime { get; set; }
 		[Required]
 		[DataType(DataType.Time)]
-		[DisplayName("End:")]
+		[DisplayName("Enter the ending time:")]
 		public TimeSpan EndTime { get; set; }
 		[Required]
-		[DisplayName("All Day:")]
+		[DisplayName("Is it an All Day Event?")]
 		public bool IsAllDay { get; set; }
 		public int MedicKey { get; set; }
 		public virtual Medics Medics { get; set; }

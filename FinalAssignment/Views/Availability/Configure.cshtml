@@ -1,0 +1,56 @@
+﻿@model FinalAssignment.ViewModels.AvailabilityViewModel
+<h2>Availability through Week</h2>
+<div>
+    <table
+		class="table table-striped table-bordered">
+		<thead>
+		    <tr><th>Sun</th>
+			<th>Mon</th>
+			<th>Tue</th>
+			<th>Wed</th>
+			<th>Thu</th>
+			<th>Fri</th>
+			<th>Sat</th></tr>
+		</thead>
+		<tbody>
+		    <tr>
+				@{foreach (var Event in Model.AvailabilityList)
+				{
+				    <td>
+			        @{foreach (var SubEvent in @Event)
+				    {
+					    <div>
+							<p>
+							    <label
+								    asp-for="@SubEvent.StartTime"></label>
+							    <span>@SubEvent.StartTime</span>
+							</p>
+						    <p>
+                                <label
+                                    asp-for="@SubEvent.EndTime"></label>
+                                <span>@SubEvent.EndTime</span>
+                            </p>
+						    <p>
+                                <label
+                                    asp-for="@SubEvent.IsAllDay"></label>
+                                <span>@SubEvent.IsAllDay</span>
+                            </p>
+					    </div>
+					<hr>
+				    }}
+				    </td>
+				}}
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div>
+    <a 
+		asp-area="" 
+		asp-controller="Availability" 
+		asp-action="Create">
+        <button
+            class="btn btn-default">New
+        </button>
+    </a>
+</div>
