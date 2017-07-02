@@ -9,6 +9,22 @@ namespace FinalAssignment.Data
 {
 	public class UserManager
 	{
+		public Medics RetrieveMedicByEmail(string Email)
+		{
+			using (var Database = new DatabaseContext())
+			{
+				return Database.Medics.Where(t => t.Email == Email).FirstOrDefault();
+			}
+		}
+
+		public Patients RetrievePatientByEmail(string Email)
+		{
+			using (var Database = new DatabaseContext())
+			{
+				return Database.Patients.Where(t => t.Email == Email).FirstOrDefault();
+			}
+		}
+
 		public List<Medics> RetrieveMedicsList()
 		{
 			using (var Database = new DatabaseContext())
@@ -49,6 +65,22 @@ namespace FinalAssignment.Data
 		public Claim GetUserRole(ClaimsPrincipal User)
 		{
 			return User.Claims.FirstOrDefault(t => t.Type == "Role");
+		}
+
+		public int GetMedicKeyByEmail(string Email)
+		{
+			using (var Database = new DatabaseContext())
+			{
+				return Database.Medics.Where(t => t.Email == Email).FirstOrDefault().MedicKey;
+			}
+		}
+
+		public int GetPatientKeyByEmail(string Email)
+		{
+			using (var Database = new DatabaseContext())
+			{
+				return Database.Patients.Where(t => t.Email == Email).FirstOrDefault().PatientKey;
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using FinalAssignment.Data;
@@ -53,8 +53,8 @@ namespace FinalAssignment.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					Model.MedicKey = this._AttachMedicKey(_Context, Model.SelectedMedicKey);
-					Model.PatientKey = this._AttachPatientKey(_Context, Model.SelectedPatientKey);
+					Model.MedicKey = this._AttachMedicKey(Model.SelectedMedicKey);
+					Model.PatientKey = this._AttachPatientKey(Model.SelectedPatientKey);
 					Consults Consult = Mapper.Map<Consults>(Model);
 					_Context.Add(Consult);
 					_Context.SaveChanges();
@@ -125,24 +125,24 @@ namespace FinalAssignment.Controllers
 			return ClassificationsList;
 		}
 
-		private int _AttachMedicKey(DatabaseContext Context, string PatientKey)
+		private int _AttachMedicKey(string PatientKey)
 		{
 			string Email = this._UserManager.GetUserEmail(this.User);
 			if (PatientKey.Length > 0)
 			{
 				return int.Parse(PatientKey);
 			}
-			return _Context.Medics.Where(t => t.Email == Email).FirstOrDefault().MedicKey;
+			return _UserManager.GetMedicKeyByEmail(Email);
 		}
 
-		private int _AttachPatientKey(DatabaseContext Context, string PatientKey)
+		private int _AttachPatientKey(string PatientKey)
 		{
 			string Email = this._UserManager.GetUserEmail(this.User);
 			if (PatientKey.Length > 0)
 			{
 				return int.Parse(PatientKey);
 			}
-			return _Context.Patients.Where(t => t.Email == Email).FirstOrDefault().PatientKey;
+			return _UserManager.GetPatientKeyByEmail(Email);
 		}
 	}
 }
