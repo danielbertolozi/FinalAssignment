@@ -19,7 +19,24 @@
 				    <td>
 			        @{foreach (var SubEvent in @Event)
 				    {
-					    <div></div>
+					    <div>
+							<p>
+							    <label
+								    asp-for="@SubEvent.StartTime"></label>
+							    <span>@SubEvent.StartTime</span>
+							</p>
+						    <p>
+                                <label
+                                    asp-for="@SubEvent.EndTime"></label>
+                                <span>@SubEvent.EndTime</span>
+                            </p>
+						    <p>
+                                <label
+                                    asp-for="@SubEvent.IsAllDay"></label>
+                                <span>@SubEvent.IsAllDay</span>
+                            </p>
+					    </div>
+					<hr>
 				    }}
 				    </td>
 				}}

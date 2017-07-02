@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FinalAssignment.Data;
 using FinalAssignment.Models;
 using FinalAssignment.ViewModels;
@@ -23,13 +25,9 @@ namespace FinalAssignment.Controllers
 		public IActionResult Configure()
 		{
 			AvailabilityViewModel Model = new AvailabilityViewModel();
-			List<Availability> List = new List<Availability>();
-			List.Add(new Availability());
-			List<Availability>[] AvailabilityList = new List<Availability>[7];
-			for (int i = 0; i < AvailabilityList.Length; i++)
-			{
-				AvailabilityList[i] = List;
-			}
+			string UserMail = this._UserManager.GetUserEmail(this.User);
+			int MedicKey = this._UserManager.GetMedicKeyByEmail(UserMail);
+			List<Availability>[] AvailabilityList = _GetEventsListFromUser(MedicKey);
 			Model.AvailabilityList = AvailabilityList;
 			return View(Model);
 		}
@@ -68,6 +66,34 @@ namespace FinalAssignment.Controllers
 				Console.Write(e);
 				return RedirectToAction("Create", "Availability");
 			}
+		}
+
+		private List<Availability>[] _GetEventsListFromUser(int MedicKey)
+		{
+			List<Availability>[] AvailabilityListArray = new List<Availability>[7];
+			AvailabilityListArray = this._InitializeAvailabilityList(AvailabilityListArray);
+			List<Availability> AvailabilityList = this._GetEventsFromUser(MedicKey);
+			int AvailabilityDay;
+			foreach (var Event in AvailabilityList)
+			{
+				AvailabilityDay = Event.DayOfWeek;
+				AvailabilityListArray[AvailabilityDay].Add(Event);
+			}
+			return AvailabilityListArray;
+		}
+
+		private List<Availability> _GetEventsFromUser(int MedicKey)
+		{
+			return this._Context.Availability.Where(x => x.MedicKey == MedicKey).ToList();
+		}
+
+		private List<Availability>[] _InitializeAvailabilityList(List<Availability>[] AvailabilityList)
+		{
+			for (int i = 0; i < AvailabilityList.Length; i++)
+			{
+				AvailabilityList[i] = new List<Availability>();
+			}
+			return AvailabilityList;
 		}
 	}
 }

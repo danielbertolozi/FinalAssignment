@@ -74,6 +74,8 @@ namespace FinalAssignment
 				Mapper.CreateMap<LoginViewModel, Medics>();
 				Mapper.CreateMap<CreateAssignmentViewModel, Consults>();
 				Mapper.CreateMap<Consults, CreateAssignmentViewModel>();
+				Mapper.CreateMap<List<Availability>, List<CreateAvailabilityViewModel>>();
+				Mapper.CreateMap<List<CreateAvailabilityViewModel>, List<Availability>>();
 			});
 
 			app.UseStaticFiles();

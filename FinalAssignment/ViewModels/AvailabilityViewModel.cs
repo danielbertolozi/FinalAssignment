@@ -7,6 +7,6 @@ namespace FinalAssignment.ViewModels
 {
 	public class AvailabilityViewModel
 	{
-		public List<Availability>[] AvailabilityList = new List<Availability>[7];
+		public List<Availability>[] AvailabilityList;
 	}
 }
